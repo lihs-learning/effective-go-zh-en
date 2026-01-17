@@ -1,10 +1,6 @@
-## Concurrency
+## Concurrency 并发
 
-## 并发
-
-### Share by communicating
-
-### 通过通信共享内存
+### Share by Communicating 通过通信共享内存
 
 Concurrent programming is a large topic and there is space only for some Go-specific highlights here.
 
@@ -25,8 +21,6 @@ This approach can be taken too far. Reference counts may be best done by putting
 One way to think about this model is to consider a typical single-threaded program running on one CPU. It has no need for synchronization primitives. Now run another such instance; it too needs no synchronization. Now let those two communicate; if the communication is the synchronizer, there's still no need for other synchronization. Unix pipelines, for example, fit this model perfectly. Although Go's approach to concurrency originates in Hoare's Communicating Sequential Processes (CSP), it can also be seen as a type-safe generalization of Unix pipes.
 
 我们可以从典型的单线程运行在单 CPU 之上的情形来审视这种模型。它无需提供同步原语。 现在再运行一个线程，它也无需同步。现在让它们俩进行通信。若将通信过程看做同步着， 那就完全不需要其它同步了。例如，Unix 管道就与这种模型完美契合。 尽管 Go 的并发处理方式来源于 Hoare 的通信顺序处理（CSP）， 它依然可以看做是类型安全的 Unix 管道的实现。
-
-### Goroutines
 
 ### Goroutines
 
@@ -76,9 +70,7 @@ These examples aren't too practical because the functions have no way of signali
 
 这些函数没什么实用性，因为它们没有实现完成时的信号处理。因此，我们需要信道。
 
-### Channels
-
-### 信道
+### Channels 信道
 
 Like maps, channels are allocated with make, and the resulting value acts as a reference to an underlying data structure. If an optional integer parameter is provided, it sets the buffer size for the channel. The default is zero, for an unbuffered or synchronous channel.
 
@@ -280,9 +272,7 @@ func Serve(clientRequests chan *Request, quit chan bool) {
 	<-quit  // 等待通知退出。
 }
 ```
-### Channels of channels
-
-### 信道中的信道
+### Channels of Channels 信道中的信道
 
 One of the most important properties of Go is that a channel is a first-class value that can be allocated and passed around like any other. A common use of this property is to implement safe, parallel demultiplexing.
 
@@ -346,9 +336,7 @@ There's clearly a lot more to do to make it realistic, but this code is a framew
 
 要使其实际可用还有很多工作要做，这些代码仅能实现一个有速率限制、并行、非阻塞的 RPC 系统的框架，而且它并不包含互斥锁。
 
-### Parallelization
-
-### 并行化
+### Parallelization 并行化
 
 Another application of these ideas is to parallelize a calculation across multiple CPU cores. If the calculation can be broken into separate pieces that can execute independently, it can be parallelized, with a channel to signal when each piece completes.
 
@@ -422,9 +410,7 @@ Be sure not to confuse the ideas of concurrency—structuring a program as indep
 
 注意不要混淆并发和并行的概念：并发是用可独立执行的组件构造程序的方法， 而并行则是为了效率在多 CPU 上平行地进行计算。尽管 Go 的并发特性能够让某些问题更易构造成并行计算， 但 Go 仍然是种并发而非并行的语言，且 Go 的模型并不适合所有的并行问题。 关于其中区别的讨论，见 [此博文](https://blog.golang.org/2013/01/concurrency-is-not-parallelism.html)。
 
-### A leaky buffer
-
-### 漏桶模型
+### A Leaky Buffer 漏桶模型
 
 The tools of concurrent programming can even make non-concurrent ideas easier to express. Here's an example abstracted from an RPC package. The client goroutine loops receiving data from some source, perhaps a network. To avoid allocating and freeing buffers, it keeps a free list, and uses a buffered channel to represent it. If the channel is empty, a new buffer gets allocated. Once the message buffer is ready, it's sent to the server on serverChan.
 

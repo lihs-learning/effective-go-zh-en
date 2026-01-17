@@ -1,13 +1,10 @@
-## Initialization
-## 初始化
+## Initialization 初始化
 
 Although it doesn't look superficially very different from initialization in C or C++, initialization in Go is more powerful. Complex structures can be built during initialization and the ordering issues among initialized objects, even among different packages, are handled correctly.
 
 尽管从表面上看，Go 的初始化过程与 C 或 C++ 相比并无太大差别，但它确实更为强大。 在初始化过程中，不仅可以构建复杂的结构，还能正确处理不同包对象间的初始化顺序。
 
-### Constants
-
-### 常量
+### Constants 常量
 
 Constants in Go are just that—constant. They are created at compile time, even when defined as locals in functions, and can only be numbers, characters (runes), strings or booleans. Because of the compile-time restriction, the expressions that define them must be constant expressions, evaluatable by the compiler. For instance, 1<<3 is a constant expression, while math.Sin(math.Pi/4) is not because the function call to math.Sin needs to happen at run time.
 
@@ -68,9 +65,7 @@ The use here of Sprintf to implement ByteSize's String method is safe (avoids re
 
 在这里用 Sprintf 实现 ByteSize 的 String 方法很安全（不会无限递归），这倒不是因为类型转换，而是它以 %f 调用了 Sprintf，它并不是一种字符串格式：Sprintf 只会在它需要字符串时才调用 String 方法，而 %f 需要一个浮点数值。
 
-### Variables
-
-### 变量
+### Variables 变量
 
 Variables can be initialized just like constants but the initializer can be a general expression computed at run time.
 
@@ -83,9 +78,7 @@ var (
 	gopath = os.Getenv("GOPATH")
 )
 ```
-### The init function
-
-### init 函数
+### The init Function init 函数
 
 Finally, each source file can define its own niladic init function to set up whatever state is required. (Actually each file can have multiple init functions.) And finally means finally: init is called after all the variable declarations in the package have evaluated their initializers, and those are evaluated only after all the imported packages have been initialized.
 

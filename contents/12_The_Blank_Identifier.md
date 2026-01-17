@@ -1,14 +1,10 @@
-## The blank identifier
-
-## 空白标识符
+## The Blank Identifier 空白标识符
 
 We've mentioned the blank identifier a couple of times now, in the context of for [range loops](https://go-zh.org/doc/effective_go.html#for) and [maps](https://go-zh.org/doc/effective_go.html#maps). The blank identifier can be assigned or declared with any value of any type, with the value discarded harmlessly. It's a bit like writing to the Unix /dev/null file: it represents a write-only value to be used as a place-holder where a variable is needed but the actual value is irrelevant. It has uses beyond those we've seen already.
 
 我们在 [for-range](https://go-zh.org/doc/effective_go.html#for) 循环和 [映射](https://go-zh.org/doc/effective_go.html#maps) 中提过几次空白标识符。 空白标识符可被赋予或声明为任何类型的任何值，而其值会被无害地丢弃。它有点像 Unix 中的 /dev/null 文件：它表示只写的值，在需要变量但不需要实际值的地方用作占位符。 我们在前面已经见过它的用法了。
 
-### The blank identifier in multiple assignment
-
-### 多重赋值中的空白标识符
+### The Blank Identifier in Multiple Assignment 多重赋值中的空白标识符
 
 The use of a blank identifier in a for range loop is a special case of a general situation: multiple assignment.
 
@@ -41,9 +37,7 @@ if fi.IsDir() {
 	fmt.Printf("%s is a directory\n", path)
 }
 ```
-### Unused imports and variables
-
-### 未使用的导入和变量
+### Unused Imports and Variables 未使用的导入和变量
 
 It is an error to import a package or to declare a variable without using it. Unused imports bloat the program and slow compilation, while a variable that is initialized but not used is at least a wasted computation and perhaps indicative of a larger bug. When a program is under active development, however, unused imports and variables often arise and it can be annoying to delete them just to have the compilation proceed, only to have them be needed again later. The blank identifier provides a workaround.
 
@@ -101,9 +95,7 @@ By convention, the global declarations to silence import errors should come righ
 
 按照惯例，我们应在导入并加以注释后，再使全局声明导入错误静默，这样可以让它们更易找到， 并作为以后清理它的提醒。
 
-### Import for side effect
-
-### 为副作用而导入
+### Import for Side Effect 为副作用而导入
 
 An unused import like fmt or io in the previous example should eventually be used or removed: blank assignments identify code as a work in progress. But sometimes it is useful to import a package only for its side effects, without any explicit use. For example, during its init function, the net/http/pprof package registers HTTP handlers that provide debugging information. It has an exported API, but most clients need only the handler registration and access the data through a web page. To import the package only for its side effects, rename the package to the blank identifier:
 
@@ -116,9 +108,7 @@ This form of import makes clear that the package is being imported for its side 
 
 这种导入格式能明确表示该包是为其副作用而导入的，因为没有其它使用该包的可能： 在此文件中，它没有名字。（若它有名字而我们没有使用，编译器就会拒绝该程序。）
 
-### Interface checks
-
-### 接口检查
+### Interface Checks 接口检查
 
 As we saw in the discussion of [interfaces](https://go-zh.org/doc/effective_go.html#interfaces_and_types) above, a type need not declare explicitly that it implements an interface. Instead, a type implements the interface just by implementing the interface's methods. In practice, most interface conversions are static and therefore checked at compile time. For example, passing an `*os.File` to a function expecting an io.Reader will not compile unless `*os.File` implements the io.Reader interface.
 

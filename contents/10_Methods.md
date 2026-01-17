@@ -1,10 +1,6 @@
-## Methods
+## Methods 方法
 
-## 方法
-
-### Pointers vs. Values
-
-### 指针 vs. 值
+### Pointers vs. Values 指针 vs. 值
 
 As we saw with ByteSize, methods can be defined for any named type (except a pointer or an interface); the receiver does not have to be a struct.
 

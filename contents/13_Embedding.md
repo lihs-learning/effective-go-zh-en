@@ -1,6 +1,4 @@
-## Embedding
-
-## 内嵌
+## Embedding 内嵌
 
 Go does not provide the typical, type-driven notion of subclassing, but it does have the ability to “borrow” pieces of an implementation by embedding types within a struct or interface.
 

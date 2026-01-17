@@ -1,6 +1,4 @@
-## Errors
-
-## 错误
+## Errors 错误
 
 Library routines must often return some sort of error indication to the caller. As mentioned earlier, Go's multivalue return makes it easy to return a detailed error description alongside the normal return value. It is good style to use this feature to provide detailed error information. For example, as we'll see, os.Open doesn't just return a nil pointer on failure, it also returns an error value that describes what went wrong.
 
@@ -95,8 +93,6 @@ The second if statement here is another [type assertion](https://go-zh.org/doc/e
 
 ## Panic
 
-## Panic
-
 The usual way to report an error to a caller is to return an error as an extra return value. The canonical Read method is a well-known instance; it returns a byte count and an error. But what if the error is unrecoverable? Sometimes the program simply cannot continue.
 
 向调用者报告错误的一般方式就是将 error 作为额外的值返回。 标准的 Read 方法就是个众所周知的实例，它返回一个字节计数和一个 error。但如果错误是不可恢复的呢？有时程序就是不能继续运行。
@@ -149,8 +145,6 @@ func init() {
 }
 ```
 ## Recover
-
-## 恢复
 
 When panic is called, including implicitly for run-time errors such as indexing a slice out of bounds or failing a type assertion, it immediately stops execution of the current function and begins unwinding the stack of the goroutine, running any deferred functions along the way. If that unwinding reaches the top of the goroutine's stack, the program dies. However, it is possible to use the built-in function recover to regain control of the goroutine and resume normal execution.
 

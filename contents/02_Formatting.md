@@ -1,6 +1,4 @@
-## Formatting
-
-## 格式化
+## Formatting 格式化
 
 Formatting issues are the most contentious but the least consequential. People can adapt to different formatting styles but it's better if they don't have to, and less time is devoted to the topic if everyone adheres to the same style. The problem is how to approach this Utopia without a long prescriptive style guide.
 
@@ -12,24 +10,14 @@ With Go we take an unusual approach and let the machine take care of most format
 
 As an example, there's no need to spend time lining up the comments on the fields of a structure. Gofmt will do that for you. Given the declaration
 
-举例来说，你无需花时间将结构体中的字段注释对齐，gofmt 将为你代劳。 假如有以下声明：
-
 ```go
 type T struct {
 	name string // name of the object
 	value int // its value
 }
 ```
-```go
-type T struct {
-	name string // 对象名
-	value int // 对象值
-}
-```
 
 gofmt will line up the columns:
-
-gofmt 会将它按列对齐为：
 
 ```go
 type T struct {
@@ -37,6 +25,18 @@ type T struct {
 	value   int    // its value
 }
 ```
+
+举例来说，你无需花时间将结构体中的字段注释对齐，gofmt 将为你代劳。 假如有以下声明：
+
+```go
+type T struct {
+	name string // 对象名
+	value int // 对象值
+}
+```
+
+gofmt 会将它按列对齐为：
+
 ```go
 type T struct {
 	name    string // 对象名
@@ -50,8 +50,6 @@ All Go code in the standard packages has been formatted with gofmt.
 
 Some formatting details remain. Very briefly:
 
-还有一些关于格式化的细节，它们非常简短：
-
 ```
 Indentation
   We use tabs for indentation and gofmt emits them by default. Use spaces only if you must.
@@ -62,6 +60,9 @@ Parentheses
     x<<8 + y<<16
   means what the spacing implies, unlike in the other languages.
 ```
+
+还有一些关于格式化的细节，它们非常简短：
+
 ```
 缩进
   我们使用制表符（tab）缩进，gofmt 默认也使用它。在你认为确实有必要时再使用空格。

@@ -1,8 +1,6 @@
-## Interfaces and other types
+## Interfaces and Other Types 接口与其它类型
 
-## 接口与其它类型
-
-### 接口
+### Interface 接口
 
 Interfaces in Go provide a way to specify the behavior of an object: if something can do this, then it can be used here. We've seen a couple of simple examples already; custom printers can be implemented by a String method while Fprintf can generate output to anything with a Write method. Interfaces with only one or two methods are common in Go code, and are usually given a name derived from the method, such as io.Writer for something that implements Write.
 
@@ -41,9 +39,7 @@ func (s Sequence) String() string {
     return str + "]"
 }
 ```
-### Conversions
-
-### 类型转换
+### Conversions 类型转换
 
 The String method of Sequence is recreating the work that Sprint already does for slices. We can share the effort if we convert the Sequence to a plain []int before calling Sprint.
 
@@ -85,9 +81,7 @@ Now, instead of having Sequence implement multiple interfaces (sorting and print
 
 现在，不必让 Sequence 实现多个接口（排序和打印）， 我们可通过将数据条目转换为多种类型（Sequence、sort.IntSlice 和 []int）来使用相应的功能，每次转换都完成一部分工作。 这在实践中虽然有些不同寻常，但往往却很有效。
 
-### Interface conversions and type assertions
-
-### 接口转换与类型断言
+### Interface Conversions and Type Assertions 接口转换与类型断言
 
 [Type switches](https://go-zh.org/doc/effective_go.html#type_switch) are a form of conversion: they take an interface and, for each case in the switch, in a sense convert it to the type of that case. Here's a simplified version of how the code under fmt.Printf turns a value into a string using a type switch. If it's already a string, we want the actual string value held by the interface, while if it has a String method we want the result of calling the method.
 
@@ -172,7 +166,7 @@ if str, ok := value.(string); ok {
 	return str.String()
 }
 ```
-### 通用性
+### Generality 通用性
 
 If a type exists only to implement an interface and has no exported methods beyond that interface, there is no need to export the type itself. Exporting just the interface makes it clear that it's the behavior that matters, not the implementation, and that other implementations with different properties can mirror the behavior of the original type. It also avoids the need to repeat the documentation on every instance of a common method.
 
@@ -219,9 +213,7 @@ NewCTR applies not just to one specific encryption algorithm and data source but
 
 NewCTR 的应用并不仅限于特定的加密算法和数据源，它适用于任何对 Block 接口和 Stream 的实现。因为它们返回接口值， 所以用其它加密模式来代替 CTR 只需做局部的更改。构造函数的调用过程必须被修改， 但由于其周围的代码只能将它看做 Stream，因此它们不会注意到其中的区别。
 
-### Interfaces and methods
-
-### 接口和方法
+### Interfaces and Methods 接口和方法
 
 Since almost anything can have methods attached, almost anything can satisfy an interface. One illustrative example is in the http package, which defines the Handler interface. Any object that implements Handler can serve HTTP requests.
 
