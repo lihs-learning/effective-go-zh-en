@@ -23,22 +23,22 @@ Go 是一门全新的语言。尽管它从既有的语言中借鉴了许多理�
 ## 章节
 
 1. [前言](README.md)
-2. [引言](01_Overview.md)
-3. [格式化](02_Formatting.md)
-4. [注释](03_Commentary.md)
-5. [命名](04_Names.md)
-6. [分号](05_Semicolons.md)
-7. [控制结构](06_Control_structures.md)
-8. [函数](07_Functions.md)
-9. [数据](08_Data.md)
-10. [初始化](09_Initialization.md)
-11. [方法](10_Methods.md)
-12. [接口和其他类型](11_Interfaces_and_other_types.md)
-13. [空白标识符](12_The_blank_identifier.md)
-14. [内嵌](13_Embedding.md)
-15. [并发](14_Concurrency.md)
-16. [错误](15_Errors.md)
-17. [一个 Web 服务器](16_A_web_server.md)
+2. [引言](docs/01_Overview.md)
+3. [格式化](docs/02_Formatting.md)
+4. [注释](docs/03_Commentary.md)
+5. [命名](docs/04_Names.md)
+6. [分号](docs/05_Semicolons.md)
+7. [控制结构](docs/06_Control_structures.md)
+8. [函数](docs/07_Functions.md)
+9. [数据](docs/08_Data.md)
+10. [初始化](docs/09_Initialization.md)
+11. [方法](docs/10_Methods.md)
+12. [接口和其他类型](docs/11_Interfaces_and_other_types.md)
+13. [空白标识符](docs/12_The_blank_identifier.md)
+14. [内嵌](docs/13_Embedding.md)
+15. [并发](docs/14_Concurrency.md)
+16. [错误](docs/15_Errors.md)
+17. [一个 Web 服务器](docs/16_A_web_server.md)
 
 > 改版说明：@2016.8.6 by bingoHuang, revision to Chinese & English version.
 
@@ -66,13 +66,29 @@ Go 是一门全新的语言。尽管它从既有的语言中借鉴了许多理�
 + **[Fork on GitHub](https://github.com/bingoHuang/effective-go-zh-en)**
 + 请顺手点一下 `STAR` ，或者留言讨论，这是对我最大的鼓励！
 
-### 下载
-
-为了让大家更方便阅读，在此提供 [网易蜂巢对象存储](https://c.163.com/dashboard#/m/nos/) 的下载地址：
-
-- [PDF 格式](http://bingohuang.nos-eastchina1.126.net/effective-go-zh-en-gitbook.pdf)
-- [EPUB 格式](http://bingohuang.nos-eastchina1.126.net/effective-go-zh-en-gitbook.epub)
-
 ## License
 
 除特别注明外，本页内容均采用知识共享 - 署名（CC-BY）3.0 协议授权，代码采用 [BSD 协议](LICENSE) 授权。
+
+## Build
+
+依赖
+
+- 工具
+  - [Node.js](https://nodejs.org/)
+  - [Pandoc](https://pandoc.org/)
+  - [XeTeX](https://github.com/TeX-Live/xetex)
+- 字体
+  - [Smiley Sans](https://github.com/atelier-anchor/smiley-sans/releases)
+  - [Maple Mono NF CN unhinted](https://github.com/subframe7536/maple-font/releases)
+  - [LXGW WenKai](https://github.com/lxgw/LxgwWenKai/releases)
+
+macOS 可通过 Homebrew 安装上述依赖：
+
+```shell
+brew install pandoc mactex font-smiley-sans font-maple-mono-nf-cn font-lxgw-wenkai node@24
+```
+
+```
+make all
+```

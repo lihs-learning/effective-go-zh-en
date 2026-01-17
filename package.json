@@ -1,0 +1,17 @@
+{
+  "name": "effective-go-zh-en",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "buildcss": "tailwindcss -i ./assets/epub.tailwind.css -o ./target/epub.css"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.28.0",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.18",
+    "@tailwindcss/typography": "^0.5.19",
+    "tailwindcss": "^4.1.18"
+  }
+}

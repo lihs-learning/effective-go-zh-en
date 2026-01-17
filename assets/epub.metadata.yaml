@@ -1,0 +1,13 @@
+title: "Effective Go"
+subtitle: "实效 Go 编程（中英双语版）"
+author:
+  - "The Go Authors"
+  - "Go 语言中文社区"
+  - "bingoHuang"
+  - "lihsai0"
+date: "2026"
+lang: zh-CN
+description: |
+  《Effective Go》是 Go 语言官方文档的重要组成部分，为编写清晰、地道的 Go 代码提供了实用技巧。
+  本书为中英双语版，方便读者在学习 Go 编程的同时提升英语阅读能力。
+rights: "© The Go Authors. Creative Commons Attribution 3.0 License (CC-BY 3.0)"

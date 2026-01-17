@@ -1,0 +1,21 @@
+\definecolor{sectioncolor}{HTML}{345A8A}
+\definecolor{subsectioncolor}{HTML}{4F81BD}
+
+\usepackage{sectsty}
+\setCJKfamilyfont{smiley}{Smiley Sans}
+\newcommand*{\smileyfont}{\fontspec{Smiley Sans}\CJKfamily{smiley}}
+\sectionfont{\smileyfont\color{sectioncolor}\fontsize{2em}{2.4em}\selectfont}
+\subsectionfont{\smileyfont\color{subsectioncolor}\fontsize{1.5em}{1.8em}\selectfont}
+\subsubsectionfont{\smileyfont}
+
+\setCJKmonofont{Maple Mono NF CN}
+
+% change background color for inline code in
+% markdown files. The following code does not work well for
+% long text as the text will exceed the page boundary
+\definecolor{bgcolor}{HTML}{E0E0E0}
+\let\oldtexttt\texttt
+
+\renewcommand{\texttt}[1]{
+  \colorbox{bgcolor}{\oldtexttt{#1}}
+}
