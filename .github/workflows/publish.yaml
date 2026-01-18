@@ -1,0 +1,30 @@
+on:
+  push:
+    tags:
+      - "*"
+  workflow_dispatch:
+
+name: Build Releases
+jobs:
+  create_release:
+    name: Create release for new version
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - name: Install Dependencies
+        run: |
+          brew update
+          brew install pandoc font-smiley-sans font-maple-mono-nf-cn font-lxgw-wenkai
+          npm install
+      - name: Build
+        run: make all
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          files: |
+            target/effective-go-zh-en.pdf
+            target/effective-go-zh-en.epub

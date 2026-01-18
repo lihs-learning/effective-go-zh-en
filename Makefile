@@ -9,7 +9,7 @@ OUTPUT_DIR = target
 PDF_OUTPUT = $(OUTPUT_DIR)/effective-go-zh-en.pdf
 TEX_OUTPUT = $(OUTPUT_DIR)/effective-go-zh-en.tex
 EPUB_OUTPUT = $(OUTPUT_DIR)/effective-go-zh-en.epub
-NPM = pnpm
+NPM = npm
 
 # Source files in order
 CONTENTS = contents/01_Overview.md \
