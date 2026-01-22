@@ -1,7 +1,8 @@
 # Variables
 COVER = assets/cover.jpg
 COVER_SMALL = assets/cover_small.jpg
-METADATA = assets/epub.metadata.yaml
+METADATA = assets/meta.yaml
+SYNTAX_THEME = assets/catppuccin_latte.theme
 EPUB_HTML = assets/epub.templete.html
 EPUB_CSS = target/epub.css
 HEADER_TEX = assets/pdf.header.tex
@@ -9,7 +10,7 @@ OUTPUT_DIR = target
 PDF_OUTPUT = $(OUTPUT_DIR)/effective-go-zh-en.pdf
 TEX_OUTPUT = $(OUTPUT_DIR)/effective-go-zh-en.tex
 EPUB_OUTPUT = $(OUTPUT_DIR)/effective-go-zh-en.epub
-NPM = npm
+NPM = pnpm
 
 # Source files in order
 CONTENTS = contents/01_Overview.md \
@@ -31,35 +32,33 @@ CONTENTS = contents/01_Overview.md \
 
 # Pandoc common options
 PANDOC_COMMON = --metadata-file=$(METADATA) \
+                --syntax-highlighting $(SYNTAX_THEME)\
+                --shift-heading-level-by=-1 \
                 --toc \
-                --toc-depth=2 \
-                --syntax-highlighting assets/catppuccin_latte.theme
-
-# Pandoc PDF options
-PANDOC_PDF_OPTS = $(PANDOC_COMMON) \
-                  --pdf-engine=xelatex \
-                  -f markdown-raw_tex \
-                  --top-level-division=chapter \
-                  --include-in-header $(HEADER_TEX) \
-                  -V documentclass=article \
-                  -V papersize=a4 \
-                  -V geometry:"top=2cm, bottom=1.5cm, left=2cm, right=2cm" \
-                  -V fontsize=12pt \
-                  -V mainfont="LXGW WenKai" \
-                  -V monofont="Maple Mono NF CN" \
-                  -V CJKmainfont="LXGW WenKai" \
-                  -V urlcolor=NavyBlue \
-                  -V numbersections=true \
-                  -V secnumdepth=3
+                --toc-depth=3
 
 # Pandoc EPUB options
 PANDOC_EPUB_OPTS = $(PANDOC_COMMON) \
                    --template=$(EPUB_HTML) \
                    --css=$(EPUB_CSS) \
-                   --epub-metadata=$(METADATA) \
+                   -M document-css=true \
                    --epub-cover-image=$(COVER) \
-                   --split-level=2 \
-                   -M document-css=true
+
+# Pandoc PDF options
+PANDOC_PDF_OPTS = $(PANDOC_COMMON) \
+                  -f gfm \
+                  --pdf-engine=xelatex \
+                  --include-in-header=$(HEADER_TEX) \
+                  -V documentclass=article \
+                  -V geometry:"a4paper, top=2cm, bottom=1.5cm, left=2cm, right=2cm" \
+                  -V fontsize=12pt \
+                  -V mainfont="LXGW WenKai" \
+                  -V monofont="Maple Mono NF CN" \
+                  -V CJKmainfont="LXGW WenKai" \
+                  -V CJKmonofont="Maple Mono NF CN" \
+                  -V urlcolor=NavyBlue \
+                  -V numbersections=true \
+                  -V secnumdepth=3
 
 # Default target
 .PHONY: all
@@ -88,7 +87,7 @@ tex: $(OUTPUT_DIR)
 
 # Build EPUB
 .PHONY: epub
-epub: $(OUTPUT_DIR) css
+epub: $(OUTPUT_DIR) $(EPUB_CSS)
 	@echo "Building EPUB..."
 	pandoc $(CONTENTS) \
 	       $(PANDOC_EPUB_OPTS) \
@@ -96,17 +95,13 @@ epub: $(OUTPUT_DIR) css
 	@echo "✅ EPUB created at $(EPUB_OUTPUT)"
 
 # Install dependencies
-.PHONY: deps
-deps: node_modules/.npm-install
-
 node_modules/.npm-install: package.json
 	@echo "Installing dependencies..."
 	$(NPM) install
 	@touch node_modules/.npm-install
 
 # Build CSS from Tailwind
-.PHONY: css
-css: $(OUTPUT_DIR) deps
+$(EPUB_CSS): node_modules/.npm-install
 	@echo "Building CSS from Tailwind..."
 	$(NPM) run buildcss
 	@echo "✅ CSS created at $(EPUB_CSS)"
@@ -128,8 +123,6 @@ help:
 	@echo "  all       - Build both PDF and EPUB (default)"
 	@echo "  pdf       - Build PDF only"
 	@echo "  epub      - Build EPUB only"
-	@echo "  deps      - Install dependencies"
-	@echo "  css       - Build CSS from Tailwind (legacy)"
 	@echo "  clean     - Remove build artifacts"
 	@echo "  distclean - Remove build artifacts and node_modules"
 	@echo "  help      - Show this help message"

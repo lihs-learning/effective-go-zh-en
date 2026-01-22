@@ -5,12 +5,12 @@
     --font-sans: "LXGW WenKai";
     --font-mono: "Maple Mono", "Maple Mono NF", "Maple Mono NF CN";
     --font-heading: "Smiley Sans";
-
-    --tw-prose-pre-code: inherit;
-    --tw-prose-pre-bg: inherit;
 }
 
 @utility prose {
+    --tw-prose-pre-code: inherit;
+    --tw-prose-pre-bg: inherit;
+
     h1,
     h2,
     h3,
@@ -18,5 +18,11 @@
     h5,
     h6 {
         @apply font-heading;
+    }
+
+    :where(code):not(pre > code) {
+        @apply before:content-none after:content-none;
+        @apply bg-gray-100 border-gray-200 border-1 rounded-lg;
+        @apply px-[0.5em] py-[0.2em];
     }
 }

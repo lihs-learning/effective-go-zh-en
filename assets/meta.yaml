@@ -6,7 +6,7 @@ author:
   - "bingoHuang"
   - "lihsai0"
 date: "2026"
-lang: zh-CN
+lang: zh-Hans
 description: |
   《Effective Go》是 Go 语言官方文档的重要组成部分，为编写清晰、地道的 Go 代码提供了实用技巧。
   本书为中英双语版，方便读者在学习 Go 编程的同时提升英语阅读能力。
