@@ -6,7 +6,7 @@ One of Go's unusual features is that functions and methods can return multiple v
 
 Go 与众不同的特性之一就是函数和方法可返回多个值。这种形式可以改善 C 中一些笨拙的习惯：将错误值返回（例如用 -1 表示 EOF）和修改通过地址传入的实参。
 
-In C, a write error is signaled by a negative count with the error code secreted away in a volatile location. In Go, Write can return a count and an error: “Yes, you wrote some bytes but not all of them because you filled the device”. The signature of the Write method on files from package os is:
+In C, a write error is signaled by a negative count with the error code secreted away in a volatile location. In Go, Write can return a count and an error:“Yes, you wrote some bytes but not all of them because you filled the device”. The signature of the Write method on files from package os is:
 
 在 C 中，写入操作发生的错误会用一个负数标记，而错误码会隐藏在某个不确定的位置。而在 Go 中，Write 会返回写入的字节数以及一个错误：“是的，您写入了一些字节，但并未全部写入，因为设备已满”。在 os 包中，File.Write 的签名为：
 
@@ -50,7 +50,7 @@ You could use it to scan the numbers in an input slice b like this:
 
 The return or result "parameters" of a Go function can be given names and used as regular variables, just like the incoming parameters. When named, they are initialized to the zero values for their types when the function begins; if the function executes a return statement with no arguments, the current values of the result parameters are used as the returned values.
 
-Go 函数的返回值或结果 “形参” 可被命名，并作为常规变量使用，就像传入的形参一样。命名后，一旦该函数开始执行，它们就会被初始化为与其类型相应的零值；若该函数执行了一条不带实参的 return 语句，则结果形参的当前值将被返回。
+Go 函数的返回值或结果“形参”可被命名，并作为常规变量使用，就像传入的形参一样。命名后，一旦该函数开始执行，它们就会被初始化为与其类型相应的零值；若该函数执行了一条不带实参的 return 语句，则结果形参的当前值将被返回。
 
 The names are not mandatory but they can make code shorter and clearer: they're documentation. If we name the results of nextInt it becomes obvious which returned int is which.
 
@@ -134,7 +134,7 @@ func Contents(filename string) (string, error) {
 
 Deferring a call to a function such as Close has two advantages. First, it guarantees that you will never forget to close the file, a mistake that's easy to make if you later edit the function to add a new return path. Second, it means that the close sits near the open, which is much clearer than placing it at the end of the function.
 
-推迟诸如 Close 之类的函数调用有两点好处：第一，它能确保你不会忘记关闭文件。如果你以后又为该函数添加了新的返回路径时，这种情况往往就会发生。第二，它意味着 “关闭” 离 “打开” 很近，这总比将它放在函数结尾处要清晰明了。
+推迟诸如 Close 之类的函数调用有两点好处：第一，它能确保你不会忘记关闭文件。如果你以后又为该函数添加了新的返回路径时，这种情况往往就会发生。第二，它意味着“关闭”离“打开”很近，这总比将它放在函数结尾处要清晰明了。
 
 The arguments to the deferred function (which include the receiver if the function is a method) are evaluated when the defer executes, not when the call executes. Besides avoiding worries about variables changing values as the function executes, this means that a single deferred call site can defer multiple function executions. Here's a silly example.
 
@@ -253,4 +253,4 @@ leaving: b
 
 For programmers accustomed to block-level resource management from other languages, defer may seem peculiar, but its most interesting and powerful applications come precisely from the fact that it's not block-based but function-based. In the section on panic and recover we'll see another example of its possibilities.
 
-对于习惯其它语言中块级资源管理的程序员，defer 似乎有点怪异， 但它最有趣而强大的应用恰恰来自于其基于函数而非块的特点。在 panic 和 recover 这两节中，我们将看到关于它可能性的其它例子。
+对于习惯其它语言中块级资源管理的程序员，defer 似乎有点怪异，但它最有趣而强大的应用恰恰来自于其基于函数而非块的特点。在 panic 和 recover 这两节中，我们将看到关于它可能性的其它例子。

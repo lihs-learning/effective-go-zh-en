@@ -92,3 +92,15 @@ brew install pandoc mactex font-smiley-sans font-maple-mono-nf-cn font-lxgw-wenk
 ```
 make all
 ```
+
+尝试在 Actions 做自动化构建，但是 LaTeX 环境不好处理，如果有兴趣欢迎 PR。
+
+目前会手动在 Release 页面放上打包好的 PDF 与 EPUB，方便大家直接下载到自己喜欢的阅读器中。
+
+## Modified
+
+对原仓库的内容进行了重新排版。主要包括：删除了中文标点后的空格、代码块间进行换行、明显连续的一段话不拆分开翻译等。
+
+还有一些值得改进的地方没有完全修改，比如代码块中只有一行注释需要翻译，那么不必重复这段代码，直接在原代码块中翻译即可。
+
+如果看到这类情况或者其他更好的建议，欢迎 PR。

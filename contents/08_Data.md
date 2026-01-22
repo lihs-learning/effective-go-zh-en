@@ -10,11 +10,11 @@ Go 提供了两种分配原语，即内建函数 new 和 make。它们所做的�
 
 Since the memory returned by new is zeroed, it's helpful to arrange when designing your data structures that the zero value of each type can be used without further initialization. This means a user of the data structure can create one with new and get right to work. For example, the documentation for bytes.Buffer states that "the zero value for Buffer is an empty buffer ready to use." Similarly, sync.Mutex does not have an explicit constructor or Init method. Instead, the zero value for a sync.Mutex is defined to be an unlocked mutex.
 
-既然 new 返回的内存已置零，那么当你设计数据结构时，每种类型的零值就不必进一步初始化了，这意味着该数据结构的使用者只需用 new 创建一个新的对象就能正常工作。例如，bytes.Buffer 的文档中提到 “零值的 Buffer 就是已准备就绪的缓冲区。" 同样，sync.Mutex 并没有显式的构造函数或 Init 方法，而是零值的 sync.Mutex 就已经被定义为已解锁的互斥锁了。
+既然 new 返回的内存已置零，那么当你设计数据结构时，每种类型的零值就不必进一步初始化了，这意味着该数据结构的使用者只需用 new 创建一个新的对象就能正常工作。例如，bytes.Buffer 的文档中提到“零值的 Buffer 就是已准备就绪的缓冲区。" 同样，sync.Mutex 并没有显式的构造函数或 Init 方法，而是零值的 sync.Mutex 就已经被定义为已解锁的互斥锁了。
 
 The zero-value-is-useful property works transitively. Consider this type declaration.
 
-“零值属性” 是传递性的。考虑以下类型声明。
+“零值属性”是传递性的。考虑以下类型声明。
 
 ```go
 type SyncedBuffer struct {
@@ -112,7 +112,7 @@ allocates an array of 100 ints and then creates a slice structure with length 10
 make([]int, 10, 100)
 ```
 
-会分配一个具有 100 个 int 的数组空间，接着创建一个长度为 10，容量为 100 并指向该数组中前 10 个元素的切片结构。（生成切片时，其容量可以省略，更多信息见切片一节。） 与此相反，`new([]int)` 会返回一个指向新分配的，已置零的切片结构，即一个指向 nil 切片值的指针。
+会分配一个具有 100 个 int 的数组空间，接着创建一个长度为 10，容量为 100 并指向该数组中前 10 个元素的切片结构。（生成切片时，其容量可以省略，更多信息见切片一节。）与此相反，`new([]int)` 会返回一个指向新分配的，已置零的切片结构，即一个指向 nil 切片值的指针。
 
 These examples illustrate the difference between new and make.
 
@@ -429,9 +429,9 @@ var ok bool
 seconds, ok = timeZone[tz]
 ```
 
-For obvious reasons this is called the “comma ok” idiom. In this example, if tz is present, seconds will be set appropriately and ok will be true; if not, seconds will be set to zero and ok will be false. Here's a function that puts it together with a nice error report:
+For obvious reasons this is called the“comma ok”idiom. In this example, if tz is present, seconds will be set appropriately and ok will be true; if not, seconds will be set to zero and ok will be false. Here's a function that puts it together with a nice error report:
 
-显然，我们可称之为 “逗号 ok” 惯用法。在下面的例子中，若 tz 存在，seconds 就会被赋予适当的值，且 ok 会被置为 true； 若不存在，seconds 则会被置为零，而 ok 会被置为 false。这里有一个函数，它将这些结合起来，并提供了一个很好的错误报告：
+显然，我们可称之为“逗号 ok”惯用法。在下面的例子中，若 tz 存在，seconds 就会被赋予适当的值，且 ok 会被置为 true；若不存在，seconds 则会被置为零，而 ok 会被置为 false。这里有一个函数，它将这些结合起来，并提供了一个很好的错误报告：
 
 ```go
 func offset(tz string) int {
@@ -522,7 +522,7 @@ which gives output
 map[CST:-21600 PST:-28800 EST:-18000 UTC:0 MST:-25200]
 ```
 
-若你只想要默认的转换，如使用十进制的整数，你可以使用通用的格式 %v（对应 “值”）；其结果与 `Print` 和 `Println` 的输出完全相同。此外，这种格式还能打印任意值，甚至包括数组、结构体和映射。以下是打印上一节中定义的时区映射的语句。
+若你只想要默认的转换，如使用十进制的整数，你可以使用通用的格式 %v（对应“值”）；其结果与 `Print` 和 `Println` 的输出完全相同。此外，这种格式还能打印任意值，甚至包括数组、结构体和映射。以下是打印上一节中定义的时区映射的语句。
 
 ```go
 fmt.Printf("%v\n", timeZone)  // 或只用 fmt.Println(timeZone)
@@ -584,7 +584,7 @@ map[string] int{"CST":-21600, "PST":-28800, "EST":-18000, "UTC":0, "MST":-25200}
 
 (Note the ampersands.) That quoted string format is also available through %q when applied to a value of type `string` or `[]byte`. The alternate format %#q will use backquotes instead if possible. (The %q format also applies to integers and runes, producing a single-quoted rune constant.) Also, %x works on strings, byte arrays and byte slices as well as on integers, generating a long hexadecimal string, and with a space in the format (% x) it puts spaces between the bytes.
 
-（请注意其中的 & 符号）当遇到 `string` 或 `[]byte` 值时，可使用 %q 产生带引号的字符串；而格式 %#q 会尽可能使用反引号。（%q 格式也可用于整数和符文，它会产生一个带单引号的符文常量。） 此外，%x 还可用于字符串、字节数组以及整数，并生成一个很长的十六进制字符串，而带空格的格式（% x）还会在字节之间插入空格。
+（请注意其中的 & 符号）当遇到 `string` 或 `[]byte` 值时，可使用 %q 产生带引号的字符串；而格式 %#q 会尽可能使用反引号。（%q 格式也可用于整数和符文，它会产生一个带单引号的符文常量。）此外，%x 还可用于字符串、字节数组以及整数，并生成一个很长的十六进制字符串，而带空格的格式（% x）还会在字节之间插入空格。
 
 Another handy format is %T, which prints the type of a value. `fmt.Printf("%T\n", timeZone)` prints
 
@@ -768,7 +768,7 @@ fmt.Println(x)
 
 But what if we wanted to do what our Append does and append a slice to a slice? Easy: use `...` at the call site, just as we did in the call to Output above. This snippet produces identical output to the one above.
 
-但如果我们要像 Append 那样将一个切片追加到另一个切片中呢？ 很简单：在调用的地方使用 `...`，就像我们在上面调用 Output 那样。以下代码片段的输出与上一个相同。
+但如果我们要像 Append 那样将一个切片追加到另一个切片中呢？很简单：在调用的地方使用 `...`，就像我们在上面调用 Output 那样。以下代码片段的输出与上一个相同。
 
 ```go
 x := []int{1,2,3}

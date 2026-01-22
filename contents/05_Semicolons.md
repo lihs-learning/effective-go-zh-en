@@ -10,7 +10,7 @@ The rule is this. If the last token before a newline is an identifier (which inc
 break continue fallthrough return ++ -- ) }
 ```
 
-The lexer always inserts a semicolon after the token. This could be summarized as, “if the newline comes after a token that could end a statement, insert a semicolon”.
+The lexer always inserts a semicolon after the token. This could be summarized as,“if the newline comes after a token that could end a statement, insert a semicolon”.
 
 规则是这样的：若在新行前的最后一个标记为标识符（包括 int 和 float64 这类的单词）、数值或字符串常量之类的基本字面或以下标记之一：
 
@@ -34,7 +34,7 @@ needs no semicolons. Idiomatic Go programs have semicolons only in places such a
 	go func() { for { dst <- <-src } }()
 ```
 
-这样的语句无需分号。通常Go程序只在诸如 for 循环子句这样的地方使用分号， 以此来将初始化器、条件及增量元素分开。如果你在一行中写多个语句，也需要用分号隔开。
+这样的语句无需分号。通常Go程序只在诸如 for 循环子句这样的地方使用分号，以此来将初始化器、条件及增量元素分开。如果你在一行中写多个语句，也需要用分号隔开。
 
 One consequence of the semicolon insertion rules is that you cannot put the opening brace of a control structure (if, for, switch, or select) on the next line. If you do, a semicolon will be inserted before the brace, which could cause unwanted effects. Write them like this
 
