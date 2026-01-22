@@ -260,14 +260,14 @@ func (ctr *Counter) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 
 What if your program has some internal state that needs to be notified that a page has been visited? Tie a channel to the web page.
 
-当页面被访问时，怎样通知你的程序去更新一些内部状态呢？为 Web 页面绑定个信道吧。
+当页面被访问时，怎样通知你的程序去更新一些内部状态呢？为 Web 页面绑定个通道吧。
 
 ```go
 // A channel that sends a notification on each visit.
 // (Probably want the channel to be buffered.)
 //
-// 每次浏览该信道都会发送一个提醒。
-// （可能需要带缓冲的信道。）
+// 每次浏览该通道都会发送一个提醒。
+// （可能需要带缓冲的通道。）
 type Chan chan *http.Request
 
 func (ch Chan) ServeHTTP(w http.ResponseWriter, req *http.Request) {
@@ -317,7 +317,7 @@ func (f HandlerFunc) ServeHTTP(w ResponseWriter, req *Request) {
 
 HandlerFunc is a type with a method, ServeHTTP, so values of that type can serve HTTP requests. Look at the implementation of the method: the receiver is a function, f, and the method calls f. That may seem odd but it's not that different from, say, the receiver being a channel and the method sending on the channel.
 
-HandlerFunc 是个具有 ServeHTTP 方法的类型，因此该类型的值就能处理 HTTP 请求。我们来看看该方法的实现：接收者是一个函数 f，而该方法调用 f。这看起来很奇怪，但是跟前面的例子没有太大区别：接收者是一个信道，（ServeHTTP）方法往该信道发消息。
+HandlerFunc 是个具有 ServeHTTP 方法的类型，因此该类型的值就能处理 HTTP 请求。我们来看看该方法的实现：接收者是一个函数 f，而该方法调用 f。这看起来很奇怪，但是跟前面的例子没有太大区别：接收者是一个通道，（ServeHTTP）方法往该通道发消息。
 
 To make ArgServer into an HTTP server, we first modify it to have the right signature.
 
@@ -345,4 +345,4 @@ When someone visits the page /args, the handler installed at that page has value
 
 In this section we have made an HTTP server from a struct, an integer, a channel, and a function, all because interfaces are just sets of methods, which can be defined for (almost) any type.
 
-在本节中，我们通过一个结构体，一个整数，一个信道和一个函数，建立了一个 HTTP 服务器，这一切都是因为接口只是方法的集合，而几乎任何类型都能定义方法。
+在本节中，我们通过一个结构体，一个整数，一个通道和一个函数，建立了一个 HTTP 服务器，这一切都是因为接口只是方法的集合，而几乎任何类型都能定义方法。

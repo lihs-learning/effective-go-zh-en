@@ -106,7 +106,7 @@ make([]int, 10, 100)
 
 allocates an array of 100 ints and then creates a slice structure with length 10 and a capacity of 100 pointing at the first 10 elements of the array. (When making a slice, the capacity can be omitted; see the section on slices for more information.) In contrast, `new([]int)` returns a pointer to a newly allocated, zeroed slice structure, that is, a pointer to a nil slice value.
 
-再回到内存分配上来。内建函数 `make(T, args)` 的目的不同于 `new(T)`。它只用于创建切片、映射和信道，并返回类型为 `T`（而非 `*T`）的一个已初始化（而非置零）的值。出现这种差异的原因在于，这三种类型本质上为引用数据类型，它们在使用前必须初始化。例如，切片是一个具有三项内容的描述符，包含一个指向（数组内部）数据的指针、长度以及容量，在这三项被初始化之前，该切片为 nil。对于切片、映射和信道，make 用于初始化其内部的数据结构并准备好将要使用的值。例如，
+再回到内存分配上来。内建函数 `make(T, args)` 的目的不同于 `new(T)`。它只用于创建切片、映射和通道，并返回类型为 `T`（而非 `*T`）的一个已初始化（而非置零）的值。出现这种差异的原因在于，这三种类型本质上为引用数据类型，它们在使用前必须初始化。例如，切片是一个具有三项内容的描述符，包含一个指向（数组内部）数据的指针、长度以及容量，在这三项被初始化之前，该切片为 nil。对于切片、映射和通道，make 用于初始化其内部的数据结构并准备好将要使用的值。例如，
 
 ```go
 make([]int, 10, 100)
@@ -144,7 +144,7 @@ v := make([]int, 100)
 
 Remember that make applies only to maps, slices and channels and does not return a pointer. To obtain an explicit pointer allocate with new or take the address of a variable explicitly.
 
-请记住，make 只适用于映射、切片和信道且不返回指针。若要获得明确的指针，请使用 new 分配内存或显式地获取一个变量的地址。
+请记住，make 只适用于映射、切片和通道且不返回指针。若要获得明确的指针，请使用 new 分配内存或显式地获取一个变量的地址。
 
 ### Arrays
 
@@ -216,7 +216,7 @@ func (file *File) Read(buf []byte) (n int, err error)
 
 The method returns the number of bytes read and an error value, if any. To read into the first 32 bytes of a larger buffer buf, slice (here used as a verb) the buffer.
 
-该方法返回读取的字节数和一个错误值（若有的话）。若要从更大的缓冲区 b 中读取前 32 个字节，只需对其进行切片即可。
+该方法返回读取的字节数和一个错误值（若有的话）。若要读取文件到一个更大的缓冲区 buf 的前 32 个字节，只需对其进行切片即可。
 
 ```go
 	n, err := f.Read(buf[0:32])

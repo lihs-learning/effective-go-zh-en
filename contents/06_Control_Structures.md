@@ -151,7 +151,7 @@ for i := 0; i < 10; i++ {
 
 If you're looping over an array, slice, string, or map, or reading from a channel, a range clause can manage the loop.
 
-若你想遍历数组、切片、字符串或者映射，或从信道中读取消息，range 子句能够帮你轻松实现循环。
+若你想遍历数组、切片、字符串或者映射，或从通道中读取消息，range 子句能够帮你轻松实现循环。
 
 ```go
 for key, value := range oldMap {

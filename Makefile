@@ -76,6 +76,8 @@ pdf: $(OUTPUT_DIR)
 	       $(PANDOC_PDF_OPTS) \
 	       -o $(PDF_OUTPUT)
 	@echo "✅ PDF created at $(PDF_OUTPUT)"
+	@sha1sum $(PDF_OUTPUT) > $(PDF_OUTPUT).sha1
+	@echo "✅ PDF checksum created at $(PDF_OUTPUT).sha1"
 
 .PHONY: tex
 tex: $(OUTPUT_DIR)
@@ -84,6 +86,8 @@ tex: $(OUTPUT_DIR)
 	       $(PANDOC_PDF_OPTS) \
 	       -s -o $(TEX_OUTPUT)
 	@echo "✅ LaTeX created at $(TEX_OUTPUT)"
+	@sha1sum $(TEX_OUTPUT) > $(TEX_OUTPUT).sha1
+	@echo "✅ LaTeX checksum created at $(TEX_OUTPUT).sha1"
 
 # Build EPUB
 .PHONY: epub
@@ -93,6 +97,8 @@ epub: $(OUTPUT_DIR) $(EPUB_CSS)
 	       $(PANDOC_EPUB_OPTS) \
 	       -o $(EPUB_OUTPUT)
 	@echo "✅ EPUB created at $(EPUB_OUTPUT)"
+	@sha1sum $(EPUB_OUTPUT) > $(EPUB_OUTPUT).sha1
+	@echo "✅ EPUB checksum created at $(EPUB_OUTPUT).sha1"
 
 # Install dependencies
 node_modules/.npm-install: package.json
@@ -115,6 +121,11 @@ clean:
 .PHONY: cleandeps
 cleandeps: clean
 	rm -rf node_modules
+
+.PHONY: checksum
+checksum:
+	@sha1sum -c $(PDF_OUTPUT).sha1
+	@sha1sum -c $(EPUB_OUTPUT).sha1
 
 # Help
 .PHONY: help

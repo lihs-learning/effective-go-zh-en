@@ -8,7 +8,7 @@ Concurrent programming is a large topic and there is space only for some Go-spec
 
 Concurrent programming in many environments is made difficult by the subtleties required to implement correct access to shared variables. Go encourages a different approach in which shared values are passed around on channels and, in fact, never actively shared by separate threads of execution. Only one goroutine has access to the value at any given time. Data races cannot occur, by design. To encourage this way of thinking we have reduced it to a slogan:
 
-在并发编程中，为实现对共享变量的正确访问需要精确的控制，这在多数环境下都很困难。Go 语言另辟蹊径，它将共享的值通过信道传递，实际上，多个独立执行的线程从不会主动共享。在任意给定的时间点，只有一个 goroutine 能够访问该值。数据竞争从设计上就被杜绝了。为了提倡这种思考方式，我们将它简化为一句口号：
+在并发编程中，为实现对共享变量的正确访问需要精确的控制，这在多数环境下都很困难。Go 语言另辟蹊径，它将共享的值通过通道传递，实际上，多个独立执行的线程从不会主动共享。在任意给定的时间点，只有一个 goroutine 能够访问该值。数据竞争从设计上就被杜绝了。为了提倡这种思考方式，我们将它简化为一句口号：
 
 > Do not communicate by sharing memory; instead, share memory by communicating.
 
@@ -16,7 +16,7 @@ Concurrent programming in many environments is made difficult by the subtleties 
 
 This approach can be taken too far. Reference counts may be best done by putting a mutex around an integer variable, for instance. But as a high-level approach, using channels to control access makes it easier to write clear, correct programs.
 
-这种方法意义深远。例如，引用计数通过为整数变量添加互斥锁来很好地实现。但作为一种高级方法，通过信道来控制访问能够让你写出更简洁，正确的程序。
+这种方法意义深远。例如，引用计数通过为整数变量添加互斥锁来很好地实现。但作为一种高级方法，通过通道来控制访问能够让你写出更简洁，正确的程序。
 
 One way to think about this model is to consider a typical single-threaded program running on one CPU. It has no need for synchronization primitives. Now run another such instance; it too needs no synchronization. Now let those two communicate; if the communication is the synchronizer, there's still no need for other synchronization. Unix pipelines, for example, fit this model perfectly. Although Go's approach to concurrency originates in Hoare's Communicating Sequential Processes (CSP), it can also be seen as a type-safe generalization of Unix pipes.
 
@@ -59,32 +59,32 @@ In Go, function literals are closures: the implementation makes sure the variabl
 
 These examples aren't too practical because the functions have no way of signaling completion. For that, we need channels.
 
-这些函数没什么实用性，因为它们没有实现完成时的信号处理。因此，我们需要信道。
+这些函数没什么实用性，因为它们没有实现完成时的信号处理。因此，我们需要通道。
 
-### Channels 信道
+### Channels 通道
 
 Like maps, channels are allocated with make, and the resulting value acts as a reference to an underlying data structure. If an optional integer parameter is provided, it sets the buffer size for the channel. The default is zero, for an unbuffered or synchronous channel.
 
-信道与映射一样，也需要通过 make 来分配内存。其结果值充当了对底层数据结构的引用。若提供了一个可选的整数形参，它就会为该信道设置缓冲区大小。默认值是零，表示不带缓冲的或同步的信道。
+通道与映射一样，也需要通过 make 来分配内存。其结果值充当了对底层数据结构的引用。若提供了一个可选的整数形参，它就会为该通道设置缓冲区大小。默认值是零，表示不带缓冲的或同步的通道。
 
 ```go
-ci := make(chan int)            // unbuffered channel of integers // 整数类型的无缓冲信道
-cj := make(chan int, 0)         // unbuffered channel of integers // 整数类型的无缓冲信道
-cs := make(chan *os.File, 100)  // buffered channel of pointers to Files // 指向文件指针的带缓冲信道
+ci := make(chan int)            // unbuffered channel of integers        // 整数类型的无缓冲通道
+cj := make(chan int, 0)         // unbuffered channel of integers        // 整数类型的无缓冲通道
+cs := make(chan *os.File, 100)  // buffered channel of pointers to Files // 指向文件指针的带缓冲通道
 ```
 
 Unbuffered channels combine communication—the exchange of a value—with synchronization—guaranteeing that two calculations (goroutines) are in a known state.
 
-无缓冲信道在通信时会同步交换数据，它能确保（两个 goroutine）计算处于确定状态。
+无缓冲通道在通信时会同步交换数据，它能确保（两个 goroutine）计算处于确定状态。
 
 There are lots of nice idioms using channels. Here's one to get us started. In the previous section we launched a sort in the background. A channel can allow the launching goroutine to wait for the sort to complete.
 
-信道有很多惯用法，我们从这里开始了解。在上一节中，我们在后台启动了排序操作。信道使得启动的 goroutine 等待排序完成。
+通道有很多惯用法，我们从这里开始了解。在上一节中，我们在后台启动了排序操作。通道使得启动的 goroutine 等待排序完成。
 
 ```go
-c := make(chan int)  // Allocate a channel. // 分配一个信道
+c := make(chan int)  // Allocate a channel. // 分配一个通道
 // Start the sort in a goroutine; when it completes, signal on the channel.
-// 在 goroutine 中启动排序；当它完成后，在信道上发送信号。
+// 在 goroutine 中启动排序；当它完成后，在通道上发送信号。
 go func() {
 	list.Sort()
 	c <- 1  // Send a signal; value does not matter. // 发送信号，任意值都可以。
@@ -95,11 +95,11 @@ doSomethingForAWhile()
 
 Receivers always block until there is data to receive. If the channel is unbuffered, the sender blocks until the receiver has received the value. If the channel has a buffer, the sender blocks only until the value has been copied to the buffer; if the buffer is full, this means waiting until some receiver has retrieved a value.
 
-接收者在收到数据前会一直阻塞。若信道是不带缓冲的，那么在接收者收到值前，发送者会一直阻塞；若信道是带缓冲的，则发送者仅仅只需阻塞到值被复制到缓冲区；若缓冲区已满，发送者会一直等待直到某个接收者取出一个值为止。
+接收者在收到数据前会一直阻塞。若通道是不带缓冲的，那么在接收者收到值前，发送者会一直阻塞；若通道是带缓冲的，则发送者仅仅只需阻塞到值被复制到缓冲区；若缓冲区已满，发送者会一直等待直到某个接收者取出一个值为止。
 
 A buffered channel can be used like a semaphore, for instance to limit throughput. In this example, incoming requests are passed to handle, which sends a value into the channel, processes the request, and then receives a value from the channel to ready the“semaphore”for the next consumer. The capacity of the channel buffer limits the number of simultaneous calls to process.
 
-带缓冲的信道可被用作信号量，例如限制吞吐量。在此例中，进入的请求会被传递给 handle，它从信道中接收值，处理请求后将值发回该信道中，以便让该“信号量”准备迎接下一次请求。信道缓冲区的容量决定了同时调用 process 的数量上限。
+带缓冲的通道可被用作信号量，例如限制吞吐量。在此例中，进入的请求会被传递给 handle，它从通道中接收值，处理请求后将值发回该通道中，以便让该“信号量”准备迎接下一次请求。通道缓冲区的容量决定了同时调用 process 的数量上限。
 
 ```go
 var sem = make(chan int, MaxOutstanding)
@@ -120,7 +120,7 @@ func Serve(queue chan *Request) {
 
 Once MaxOutstanding handlers are executing process, any more will block trying to send into the filled channel buffer, until one of the existing handlers finishes and receives from the buffer.
 
-一旦有 MaxOutstanding 个处理器进入运行状态，其他的所有处理器都会在试图发送值到信道缓冲区的时候阻塞，直到某个处理器完成处理并从缓冲区取回一个值为止。
+一旦有 MaxOutstanding 个处理器进入运行状态，其他的所有处理器都会在试图发送值到通道缓冲区的时候阻塞，直到某个处理器完成处理并从缓冲区取回一个值为止。
 
 This design has a problem, though: Serve creates a new goroutine for every incoming request, even though only MaxOutstanding of them can run at any moment. As a result, the program can consume unlimited resources if the requests come in too fast. We can address that deficiency by changing Serve to gate the creation of the goroutines. Here's an obvious solution, but beware it has a bug we'll fix subsequently:
 
@@ -184,7 +184,7 @@ but it's a legal and idiomatic in Go to do this. You get a fresh version of the 
 
 Going back to the general problem of writing the server, another approach that manages resources well is to start a fixed number of handle goroutines all reading from the request channel. The number of goroutines limits the number of simultaneous calls to process. This Serve function also accepts a channel on which it will be told to exit; after launching the goroutines it blocks receiving from that channel.
 
-回到编写服务器的一般问题上来。另一种管理资源的好方法就是启动固定数量的 handle goroutine，一起从请求信道中读取数据。Goroutine 的数量限制了同时调用 process 的数量。Serve 同样会接收一个通知退出的信道，在启动所有 goroutine 后，它将阻塞并暂停从信道中接收消息。
+回到编写服务器的一般问题上来。另一种管理资源的好方法就是启动固定数量的 handle goroutine，一起从请求通道中读取数据。Goroutine 的数量限制了同时调用 process 的数量。Serve 同样会接收一个通知退出的通道，在启动所有 goroutine 后，它将阻塞并暂停从通道中接收消息。
 
 ```go
 func handle(queue chan *Request) {
@@ -203,7 +203,7 @@ func Serve(clientRequests chan *Request, quit chan bool) {
 }
 ```
 
-### Channels of Channels 信道中的信道
+### Channels of Channels 通道中的通道
 
 One of the most important properties of Go is that a channel is a first-class value that can be allocated and passed around like any other. A common use of this property is to implement safe, parallel demultiplexing.
 
@@ -211,7 +211,7 @@ Go语言最重要的特性之一是，通道是一种一等公民的值，可以
 
 In the example in the previous section, handle was an idealized handler for a request but we didn't define the type it was handling. If that type includes a channel on which to reply, each client can provide its own path for the answer. Here's a schematic definition of type Request.
 
-在上一节的例子中，handle 是个非常理想化的请求处理程序，但我们并未定义它所处理的请求类型。若该类型包含一个可用于回复的信道，那么每一个客户端都能为其回应提供自己的路径。以下为 Request 类型的大概定义。
+在上一节的例子中，handle 是个非常理想化的请求处理程序，但我们并未定义它所处理的请求类型。若该类型包含一个可用于回复的通道，那么每一个客户端都能为其回应提供自己的路径。以下为 Request 类型的大概定义。
 
 ```go
 type Request struct {
@@ -222,7 +222,7 @@ type Request struct {
 ```
 The client provides a function and its arguments, as well as a channel inside the request object on which to receive the answer.
 
-客户端提供了一个函数及其实参，此外在请求对象中还有个接收应答的信道。
+客户端提供了一个函数及其实参，此外在请求对象中还有个接收应答的通道。
 
 ```go
 func sum(a []int) (s int) {
@@ -261,7 +261,7 @@ There's clearly a lot more to do to make it realistic, but this code is a framew
 
 Another application of these ideas is to parallelize a calculation across multiple CPU cores. If the calculation can be broken into separate pieces that can execute independently, it can be parallelized, with a channel to signal when each piece completes.
 
-这些设计的另一个应用是在多 CPU 核心上实现并行计算。如果计算过程能够被分为几块可独立执行的过程，它就可以在每块计算结束时向信道发送信号，从而实现并行处理。
+这些设计的另一个应用是在多 CPU 核心上实现并行计算。如果计算过程能够被分为几块可独立执行的过程，它就可以在每块计算结束时向通道发送信号，从而实现并行处理。
 
 Let's say we have an expensive operation to perform on a vector of items, and that the value of the operation on each item is independent, as in this idealized example.
 
@@ -282,7 +282,7 @@ func (v Vector) DoSome(i, n int, u Vector, c chan int) {
 
 We launch the pieces independently in a loop, one per CPU. They can complete in any order but it doesn't matter; we just count the completion signals by draining the channel after launching all the goroutines.
 
-我们在循环中启动了独立的处理块，每个 CPU 将执行一个处理。它们有可能以乱序的形式完成并结束，但这没有关系；我们只需在所有 goroutine 开始后接收，并统计信道中的完成信号即可。
+我们在循环中启动了独立的处理块，每个 CPU 将执行一个处理。它们有可能以乱序的形式完成并结束，但这没有关系；我们只需在所有 goroutine 开始后接收，并统计通道中的完成信号即可。
 
 ```go
 const NCPU = 4 // number of CPU cores // CPU 核心数
@@ -293,7 +293,7 @@ func (v Vector) DoAll(u Vector) {
 		go v.DoSome(i*len(v)/NCPU, (i+1)*len(v)/NCPU, u, c)
 	}
 	// Drain the channel.
-	// 排空信道。
+	// 排空通道。
 	for i := 0; i < NCPU; i++ {
 		<-c // wait for one task to complete // 阻塞，直到一个任务完成
 	}
@@ -313,7 +313,7 @@ Be sure not to confuse the ideas of concurrency—structuring a program as indep
 
 The tools of concurrent programming can even make non-concurrent ideas easier to express. Here's an example abstracted from an RPC package. The client goroutine loops receiving data from some source, perhaps a network. To avoid allocating and freeing buffers, it keeps a free list, and uses a buffered channel to represent it. If the channel is empty, a new buffer gets allocated. Once the message buffer is ready, it's sent to the server on serverChan.
 
-并发编程的工具可以用来很容易的表达一些并非是并发的思想。这里有个提取自 RPC 包的例子。客户端 Go 程从某些来源，可能是网络中循环接收数据。为避免分配和释放缓冲区，它保存了一个空闲列表，使用一个带缓冲信道表示。若信道为空，就会分配新的缓冲区。一旦消息缓冲区就绪，它将通过 serverChan 被发送到服务器。
+并发编程的工具可以用来很容易的表达一些并非是并发的思想。这里有个提取自 RPC 包的例子。客户端 Go 程从某些来源，可能是网络中循环接收数据。为避免分配和释放缓冲区，它保存了一个空闲列表，使用一个带缓冲通道表示。若通道为空，就会分配新的缓冲区。一旦消息缓冲区就绪，它将通过 serverChan 被发送到服务器。
 
 ```go
 var freeList = make(chan *Buffer, 100)
@@ -364,4 +364,4 @@ func server() {
 
 The client attempts to retrieve a buffer from freeList; if none is available, it allocates a fresh one. The server's send to freeList puts b back on the free list unless the list is full, in which case the buffer is dropped on the floor to be reclaimed by the garbage collector. (The default clauses in the select statements execute when no other case is ready, meaning that the selects never block.) This implementation builds a leaky bucket free list in just a few lines, relying on the buffered channel and the garbage collector for bookkeeping.
 
-客户端试图从 freeList 中获取缓冲区；若没有缓冲区可用，它就将分配一个新的。服务器将 b 放回空闲列表 freeList 中直到列表已满，此时缓冲区将被丢弃，并被垃圾回收器回收。（select 语句中的 default 子句在没有条件符合时执行，这也就意味着 selects 永远不会被阻塞。）依靠带缓冲的信道和垃圾回收器的记录，我们仅用短短几行代码就构建了一个空闲列表漏桶模型。
+客户端试图从 freeList 中获取缓冲区；若没有缓冲区可用，它就将分配一个新的。服务器将 b 放回空闲列表 freeList 中直到列表已满，此时缓冲区将被丢弃，并被垃圾回收器回收。（select 语句中的 default 子句在没有条件符合时执行，这也就意味着 selects 永远不会被阻塞。）依靠带缓冲的通道和垃圾回收器的记录，我们仅用短短几行代码就构建了一个空闲列表漏桶模型。
